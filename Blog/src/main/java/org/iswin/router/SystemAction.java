@@ -53,7 +53,7 @@ public class SystemAction {
 	@Resource(name = "cron")
 	private Cron cron;
 
-	@RequestMapping(value = { "/xcoderiswinLogin/article/create" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
+	@RequestMapping(value = { "/admin/article/create" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
 	public String createArticle(@RequestParam("title") String title,
 			@RequestParam("content") String content,
 			@RequestParam("category") int category,
@@ -62,16 +62,16 @@ public class SystemAction {
 		this.userService
 				.createArticle(new Article(0, title, content, summary, null, 0,
 						Integer.valueOf(u.getId()), Integer.valueOf(category)));
-		return "redirect:/xcoderiswinLogin/article/all";
+		return "redirect:/admin/article/all";
 	}
 
-	@RequestMapping(value = { "/xcoderiswinLogin/article/create" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })
+	@RequestMapping(value = { "/admin/article/create" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })
 	public String createArticles(ModelMap map) {
 		map.addAttribute("category", this.commonService.getCategorys());
 		return "/system/article/create";
 	}
 
-	@RequestMapping(value = { "/xcoderiswinLogin/article/update/{id}" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
+	@RequestMapping(value = { "/admin/article/update/{id}" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
 	public String updateArticleByid(@PathVariable("id") String id,
 			ModelMap map, @RequestParam("title") String title,
 			@RequestParam("content") String content,
@@ -83,17 +83,17 @@ public class SystemAction {
 					title, content, summary, null, 0,
 					Integer.valueOf(u.getId()), Integer.valueOf(category)));
 		}
-		return "redirect:/xcoderiswinLogin/article/all";
+		return "redirect:/admin/article/all";
 	}
 
-	@RequestMapping(value = { "/xcoderiswinLogin/article/update/{id}" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })
+	@RequestMapping(value = { "/admin/article/update/{id}" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })
 	public String updateArticle(@PathVariable("id") int id, ModelMap map) {
 		map.addAttribute("article", this.commonService.getArticleById(id));
 		map.addAttribute("category", this.commonService.getCategorys());
 		return "/system/article/update";
 	}
 
-	@RequestMapping({ "/xcoderiswinLogin/article/all" })
+	@RequestMapping({ "/admin/article/all" })
 	public String showArticles(ModelMap map) {
 		int count = this.commonService.getArticleCount();
 		PageHelp p = new PageHelp(1, count);
@@ -108,7 +108,7 @@ public class SystemAction {
 		return "/system/article/all";
 	}
 
-	@RequestMapping({ "/xcoderiswinLogin/article/all/{no}" })
+	@RequestMapping({ "/admin/article/all/{no}" })
 	public String showArticlesByPno(@PathVariable("no") String no, ModelMap map) {
 		int pno = 1;
 		if (no != null) {
@@ -131,70 +131,70 @@ public class SystemAction {
 		return "/system/article/all";
 	}
 
-	@RequestMapping({ "/xcoderiswinLogin/article/del/{id}" })
+	@RequestMapping({ "/admin/article/del/{id}" })
 	public String delArticleById(@PathVariable("id") String id) {
 		if (id != null)
 			this.userService.deleteArticle(Integer.parseInt(id));
-		return "redirect:/xcoderiswinLogin/article/all";
+		return "redirect:/admin/article/all";
 	}
 
-	@RequestMapping(value = { "/xcoderiswinLogin/category/add" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })
+	@RequestMapping(value = { "/admin/category/add" }, method = { org.springframework.web.bind.annotation.RequestMethod.GET })
 	public String categoryCreate(ModelMap map) {
 		map.addAttribute("categorys", this.commonService.getCategorys());
 		return "/system/category";
 	}
 
-	@RequestMapping(value = { "/xcoderiswinLogin/category/add" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
+	@RequestMapping(value = { "/admin/category/add" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
 	public String createCategory(@RequestParam("name") String name) {
 		this.userService.createCategory(new Category(0, name));
-		return "redirect:/xcoderiswinLogin/category/add";
+		return "redirect:/admin/category/add";
 	}
 
-	@RequestMapping({ "/xcoderiswinLogin/category/del/{id}" })
+	@RequestMapping({ "/admin/category/del/{id}" })
 	public String delCategory(@PathVariable("id") String id) {
 		if (id != null) {
 			this.userService.deleteCategory(Integer.parseInt(id));
 		}
-		return "redirect:/xcoderiswinLogin/category/add";
+		return "redirect:/admin/category/add";
 	}
 
-	@RequestMapping(value = { "/xcoderiswinLogin/category/update/{id}" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
+	@RequestMapping(value = { "/admin/category/update/{id}" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
 	public String updateCateGory(@PathVariable String id,
 			@RequestParam("name") String name) {
 		if ((id != null) && (name != null)) {
 			this.userService.updateCategory(new Category(Integer.parseInt(id),
 					name));
 		}
-		return "redirect:/xcoderiswinLogin/category/add";
+		return "redirect:/admin/category/add";
 	}
 
-	@RequestMapping({ "/xcoderiswinLogin/link/all" })
+	@RequestMapping({ "/admin/link/all" })
 	public String getLinks(ModelMap map) {
 		map.addAttribute("links", this.commonService.getLinks());
 		return "/system/link";
 	}
 
-	@RequestMapping(value = { "/xcoderiswinLogin/link/add" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
+	@RequestMapping(value = { "/admin/link/add" }, method = { org.springframework.web.bind.annotation.RequestMethod.POST })
 	public String addLink(@RequestParam("url") String url,
 			@RequestParam("descript") String descript) {
 		this.commonService.addLink(new Link(0, url, descript));
-		return "redirect:/xcoderiswinLogin/link/all";
+		return "redirect:/admin/link/all";
 	}
 
-	@RequestMapping({ "/xcoderiswinLogin/link/del/{id}" })
+	@RequestMapping({ "/admin/link/del/{id}" })
 	public String delLink(@PathVariable("id") String id) {
 		if (id != null) {
 			this.commonService.delLink(Integer.parseInt(id));
 		}
-		return "redirect:/xcoderiswinLogin/link/all";
+		return "redirect:/admin/link/all";
 	}
 
-	@RequestMapping({ "/xcoderiswinLogin/task/run" })
+	@RequestMapping({ "/admin/task/run" })
 	public void runTask() {
 		this.cron.cron();
 	}
 
-	@RequestMapping({ "/xcoderiswinLogin/file/file_manager_json" })
+	@RequestMapping({ "/admin/file/file_manager_json" })
 	public void fileUpload_json(HttpServletRequest request,
 			HttpServletResponse response, PrintWriter out) {
 		String rootPath = request.getSession().getServletContext()
@@ -294,7 +294,7 @@ public class SystemAction {
 		out.println(result.toJSONString());
 	}
 
-	@RequestMapping({ "/xcoderiswinLogin/file/upload_json" })
+	@RequestMapping({ "/admin/file/upload_json" })
 	public void upload_json(HttpServletRequest request,
 			HttpServletResponse response, PrintWriter out)
 			throws FileUploadException {

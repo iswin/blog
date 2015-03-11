@@ -21,19 +21,19 @@ public class UserAction
   @Resource(name="userService")
   private UserService userService;
 
-  @RequestMapping(value={"/xcoderiswinLogin/login"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+  @RequestMapping(value={"/admin/login"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
   public String userLogin()
   {
     return "/system/login";
   }
 
-  @RequestMapping({"/xcoderiswinLogin/"})
+  @RequestMapping({"/admin/"})
   public String systemIndex(ModelMap map) {
     map.addAttribute("config", this.userService.getConfig());
     return "/system/index";
   }
 
-  @RequestMapping(value={"/xcoderiswinLogin/login"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+  @RequestMapping(value={"/admin/login"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
   public ModelAndView userLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session, HttpServletResponse resp)
   {
     boolean res = false;
@@ -42,11 +42,11 @@ public class UserAction
       res = this.userService
         .userLogin(new User(username, MD5.getMd5(password)));
       if (!res) {
-        mv.setViewName("redirect:/xcoderiswinLogin/login");
+        mv.setViewName("redirect:/admin/login");
       } else {
         System.out.println("success");
         session.setAttribute("user", this.userService.getUser(username));
-        mv.setViewName("redirect:/xcoderiswinLogin/");
+        mv.setViewName("redirect:/admin/");
       }
     } catch (Exception e) {
       try {
@@ -58,23 +58,23 @@ public class UserAction
     return mv;
   }
 
-  @RequestMapping({"/xcoderiswinLogin/logout"})
+  @RequestMapping({"/admin/logout"})
   public ModelAndView logOut(HttpSession session) {
     session.removeAttribute("user");
-    return new ModelAndView("redirect:/xcoderiswinLogin/login");
+    return new ModelAndView("redirect:/admin/login");
   }
 
-  @RequestMapping(value={"/xcoderiswinLogin/user/update"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
+  @RequestMapping(value={"/admin/user/update"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
   public String userUpdate(@RequestParam("nickname") String nickname, @RequestParam("password") String password, HttpSession session)
   {
     User u = (User)session.getAttribute("user");
     this.userService.updateUser(new User(0, u.getUsername(), nickname, 
       MD5.getMd5(password)));
     session.removeAttribute("user");
-    return "redirect:/xcoderiswinLogin/login";
+    return "redirect:/admin/login";
   }
 
-  @RequestMapping(value={"/xcoderiswinLogin/user/update"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
+  @RequestMapping(value={"/admin/user/update"}, method={org.springframework.web.bind.annotation.RequestMethod.GET})
   public String updateUser() {
     return "/system/password";
   }
